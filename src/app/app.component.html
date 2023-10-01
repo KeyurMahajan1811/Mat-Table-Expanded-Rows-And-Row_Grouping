@@ -1,0 +1,96 @@
+<mat-table  multiTemplateDataRows matSort (matSortChange)="sortData($event)" [dataSource]="dataSource" >
+
+
+  <!-- marks Column -->
+  <ng-container matColumnDef="marks">
+    <mat-header-cell mat-sort-header  style="background-color: gainsboro;" *matHeaderCellDef><b>Marks.</b>  </mat-header-cell>
+    <mat-cell  *matCellDef="let element"> {{element.marks}} </mat-cell>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <mat-header-cell mat-sort-header style="background-color: gainsboro;"  *matHeaderCellDef> <b> Name</b> </mat-header-cell>
+    <mat-cell  *matCellDef="let element"> {{element.name}} </mat-cell>
+  </ng-container>
+
+  <!-- cgpa Column -->
+  <ng-container matColumnDef="cgpa">
+    <mat-header-cell mat-sort-header style="background-color: gainsboro;"  *matHeaderCellDef><b>CGPA</b>  </mat-header-cell>
+    <mat-cell  *matCellDef="let element"> {{element.cgpa}} </mat-cell>
+  </ng-container>
+
+  <!-- surname Column -->
+  <ng-container matColumnDef="surname">
+    <mat-header-cell mat-sort-header style="background-color: gainsboro;" *matHeaderCellDef > <b> Surname</b> </mat-header-cell>
+    <mat-cell  *matCellDef="let element"> {{element.surname}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="marksheet">
+    <mat-header-cell mat-sort-header style="background-color: gainsboro;" *matHeaderCellDef> <b> Marksheet</b> </mat-header-cell>
+    <mat-cell  *matCellDef="let element"> 
+      <span (click)="element.expand = !element.expand;reloadDatasource()">
+        <h1 *ngIf="!element.expand" >
+          <mat-icon>expand_more</mat-icon>
+        </h1>
+        <h1 *ngIf="element.expand">
+          <mat-icon>expand_less</mat-icon>
+        </h1>
+      </span>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+  <mat-row  *matRowDef="let row; columns: displayedColumns; when:isGroupRow"></mat-row>
+  <ng-container  matColumnDef="expandedRow" >
+    <mat-cell *matCellDef="let expandRow" style="padding: 0 !important; "
+    class="mat-elevation-z8">
+    <mat-table class="mat-elevation-z8" [dataSource]="expandRow.markSheets" style="border-top:1px solid black; border-bottom:1px solid black">
+      
+  <!-- marks Column -->
+  <ng-container matColumnDef="score">
+    <mat-header-cell mat-sort-header  style="background-color: gainsboro;" *matHeaderCellDef><b>Score</b>  </mat-header-cell>
+    <mat-cell  *matCellDef="let expandedTablerow"> {{expandedTablerow.score}} </mat-cell>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="student">
+    <mat-header-cell mat-sort-header style="background-color: gainsboro;"  *matHeaderCellDef> <b> Student</b> </mat-header-cell>
+    <mat-cell  *matCellDef="let expandedTablerow"> {{expandRow.name}} </mat-cell>
+  </ng-container>
+
+  <!-- cgpa Column -->
+  <ng-container matColumnDef="gpa">
+    <mat-header-cell mat-sort-header style="background-color: gainsboro;"  *matHeaderCellDef><b>GPA</b>  </mat-header-cell>
+    <mat-cell  *matCellDef="let expandedTablerow"> {{expandedTablerow.gpa}} </mat-cell>
+  </ng-container>
+
+  <!-- surname Column -->
+  <ng-container matColumnDef="subject">
+    <mat-header-cell mat-sort-header style="background-color: gainsboro;" *matHeaderCellDef > <b> Subject</b> </mat-header-cell>
+    <mat-cell  *matCellDef="let expandedTablerow"> {{expandedTablerow.subject}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="remark">
+    <mat-header-cell mat-sort-header style="background-color: gainsboro;" *matHeaderCellDef> <b> Remark</b> </mat-header-cell>
+    <mat-cell  *matCellDef="let expandedTablerow"> 
+      <span>
+        <h3 [ngStyle]="{color: expandedTablerow.remark === 'Pass' ?  'Green' : 'Red'}">
+          {{expandedTablerow.remark}}
+        </h3>
+        
+      </span>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="childTabledisplayedColumns; "></mat-header-row>
+  <mat-row  *matRowDef="let expandedTablerow; columns: childTabledisplayedColumns; "></mat-row>
+
+    </mat-table>
+    </mat-cell>
+  </ng-container>
+  <mat-row  *matRowDef="let row; columns: ['expandedRow']; when:isExpand"  style="min-height: 0px;"></mat-row>
+  <ng-container  matColumnDef="groupHeader" >
+    <mat-cell colspan="999"  *matCellDef="let group" style="min-height: 0px; border-bottom: 1px solid #000000;">  </mat-cell>
+  </ng-container>
+  <mat-row  *matRowDef="let row; columns: ['groupHeader']; when:isGroup"  style="min-height: 0px;"></mat-row>
+</mat-table>
+
